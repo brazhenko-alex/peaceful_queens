@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.brazole.peacefulqueens.base.ui.theme.AppTheme
-import com.brazole.peacefulqueens.bestScores.ui.CloseShadowButton
 
 @Composable
 fun DialogHeader(

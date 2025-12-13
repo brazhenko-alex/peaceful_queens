@@ -1,4 +1,4 @@
-package com.brazole.peacefulqueens.bestScores.ui.dialogs
+package com.brazole.peacefulqueens.bestScores.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

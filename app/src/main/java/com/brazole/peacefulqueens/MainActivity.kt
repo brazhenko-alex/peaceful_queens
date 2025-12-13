@@ -17,12 +17,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupSystemBars() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        
+
         val backgroundColor = ContextCompat.getColor(this, R.color.app_background)
-        
+
         window.statusBarColor = backgroundColor
         window.navigationBarColor = backgroundColor
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowCompat.getInsetsController(window, window.decorView).apply {
                 isAppearanceLightStatusBars = false

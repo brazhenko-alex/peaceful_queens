@@ -1,5 +1,6 @@
-package com.brazole.peacefulqueens.bestScores.ui
+package com.brazole.peacefulqueens.base.ui.composables
 
+import android.graphics.Paint
 import android.graphics.RectF
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,7 +44,7 @@ fun NeonGlowButton(
     val glowRadiusPx = with(LocalDensity.current) { glowRadius.toPx() }
 
     val paint = remember(glowColor, glowRadiusPx) {
-        android.graphics.Paint().apply {
+        Paint().apply {
             color = glowColor.toArgb()
             isAntiAlias = true
             setShadowLayer(

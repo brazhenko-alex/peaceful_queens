@@ -62,7 +62,7 @@ data class Colors(
             winGreen = Color(0xFF5B8A3C),
             background = Color(0xFF1F232F),
             backgroundDialog = Color(0xFF242736),
-            backgroundDark = Color(0xFF20212E) ,
+            backgroundDark = Color(0xFF20212E),
             surface = Color(0xFF27232F),
             iconTint = Color(0xFFA2A7BB),
             error = Color(0xFFFF5252),

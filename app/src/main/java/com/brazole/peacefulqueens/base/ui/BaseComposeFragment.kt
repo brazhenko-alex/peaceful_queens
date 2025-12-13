@@ -11,8 +11,8 @@ import com.brazole.peacefulqueens.base.data.NavigateBack
 import com.brazole.peacefulqueens.base.data.ShowMessage
 import com.brazole.peacefulqueens.base.data.ShowMessageRes
 import com.brazole.peacefulqueens.base.data.UiState
-import com.brazole.peacefulqueens.util.extensions.launchAndCollect
 import com.brazole.peacefulqueens.base.viewModel.BaseViewModel
+import com.brazole.peacefulqueens.util.extensions.launchAndCollect
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 

@@ -1,4 +1,4 @@
-package com.brazole.peacefulqueens.bestScores.ui
+package com.brazole.peacefulqueens.base.ui.composables
 
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
@@ -126,8 +126,7 @@ private fun CloseButtonPreview14() {
                 shadowRadius = 4.dp,
                 shadowOffsetY = 0.dp
             )
-            Box (modifier = Modifier
-            ) {
+            Box(modifier = Modifier) {
                 CloseShadowButton(
                     onClick = {},
                 )
