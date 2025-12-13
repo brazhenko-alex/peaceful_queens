@@ -4,7 +4,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 object Dimens {
-    val dialogCornerRadius: Dp = 12.dp
+    val iconButtonSize: Dp = 28.dp
+    val cornerRadius: Dp = 12.dp
     val glowRadius: Dp = 12.dp
     val spacerInBlock: Dp = 12.dp
     val paddingHorizontal = 16.dp

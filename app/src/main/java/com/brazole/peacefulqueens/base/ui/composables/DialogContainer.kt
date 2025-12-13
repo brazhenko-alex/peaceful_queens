@@ -23,7 +23,7 @@ fun AppDialogContainer(
     content: @Composable BoxScope.() -> Unit
 ) {
     val configuration = LocalConfiguration.current
-    val shape = RoundedCornerShape(Dimens.dialogCornerRadius)
+    val shape = RoundedCornerShape(Dimens.cornerRadius)
 
     BoxWithConstraints(modifier = modifier) {
         val parentMaxWidth = maxWidth
