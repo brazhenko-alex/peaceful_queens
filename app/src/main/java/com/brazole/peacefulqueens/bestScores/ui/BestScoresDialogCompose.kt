@@ -38,6 +38,7 @@ import com.brazole.peacefulqueens.base.ui.theme.Dimens
 import com.brazole.peacefulqueens.bestScores.data.BestScore
 import com.brazole.peacefulqueens.bestScores.data.BestScoresCallbacks
 import com.brazole.peacefulqueens.bestScores.data.BestScoresUiState
+import com.brazole.peacefulqueens.bestScores.ui.dialogs.ClearConfirmDialog
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -74,44 +75,6 @@ fun BestScoresDialog(
         }
         if (uiState.isLoading) {
             LoadingCompose()
-        }
-    }
-}
-
-@Composable
-private fun ClearConfirmDialog(
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
-) {
-    Dialog(onDismissRequest = { onDismiss() }) {
-        AppDialogContainer{
-            Column(
-                modifier = Modifier.padding(
-                    horizontal = Dimens.paddingHorizontal,
-                    vertical = Dimens.paddingVertical
-                ),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(R.string.are_you_sure_you_want_to_clear_best_score_data),
-                    style = AppTheme.typography.textMedium,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    TextButton(onClick = onDismiss) {
-                        Text(stringResource(R.string.cancel))
-                    }
-                    Button(onClick = {
-                        onConfirm()
-                        onDismiss()
-                    }) {
-                        Text(stringResource(R.string.clear))
-                    }
-                }
-            }
         }
     }
 }
