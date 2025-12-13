@@ -33,7 +33,7 @@ class BestScoresRepository @Inject constructor(
     }
 
     private suspend fun getBestScoreFromVeryRemoteRepository(): List<BestScoreEntity> {
-        delay(2000) // Simulating network delay
+        delay(1500) // Simulating network delay
         val scores = mutableListOf<BestScoreEntity>()
         val existedBestScores = getAllBesScoresKeys()
         existedBestScores.forEach { key ->
@@ -51,7 +51,7 @@ class BestScoresRepository @Inject constructor(
     }
 
     suspend fun clearAllBestScores() {
-        delay(2000) // Simulating network delay
+        delay(1000) // Simulating network delay
         getAllBesScoresKeys().forEach {
             preferencesManager.remove(it)
         }
