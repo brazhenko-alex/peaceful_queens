@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/gameFragment">
+
+    <fragment
+        android:id="@+id/gameFragment"
+        android:label="Game"
+        android:name="com.brazole.peacefulqueens.game.ui.GameFragment">
+        <argument
+            android:defaultValue="8"
+            android:name="boardSize"
+            app:argType="integer" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/bestScoresDialogFragment"
+        android:label="Best Scores"
+        android:name="com.brazole.peacefulqueens.bestScores.ui.BestScoresDialogFragment" />
+
+</navigation>
+
