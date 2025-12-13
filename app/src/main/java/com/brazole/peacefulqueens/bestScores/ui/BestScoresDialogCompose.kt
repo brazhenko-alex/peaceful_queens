@@ -13,11 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,9 +27,9 @@ import androidx.compose.ui.tooling.preview.Devices.PIXEL_2
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_C
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.brazole.peacefulqueens.R
 import com.brazole.peacefulqueens.base.ui.composables.AppDialogContainer
+import com.brazole.peacefulqueens.base.ui.composables.DialogHeader
 import com.brazole.peacefulqueens.base.ui.composables.LoadingCompose
 import com.brazole.peacefulqueens.base.ui.theme.AppTheme
 import com.brazole.peacefulqueens.base.ui.theme.Dimens
@@ -89,18 +87,10 @@ private fun ScoreTable(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = stringResource(R.string.best_scores),
-                style = AppTheme.typography.title
-            )
-
-            CloseShadowButton(
-                modifier = Modifier.align(Alignment.TopEnd),
-                onClick = onDismiss
-            )
-        }
+        DialogHeader(
+            title = stringResource(R.string.best_scores),
+            onDismiss = onDismiss
+        )
         SpacerInDialog()
 
         TableHeader()
