@@ -184,7 +184,6 @@ private fun ScoreTable(
         SpacerInDialog()
 
         NeonGlowButton(
-
             text = stringResource(R.string.clear_all),
             onClick = onClearAll
         )

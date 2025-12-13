@@ -3,6 +3,7 @@ package com.brazole.peacefulqueens.base.ui.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.brazole.peacefulqueens.base.ui.theme.AppTheme
 import com.brazole.peacefulqueens.base.ui.theme.Dimens
 import com.brazole.peacefulqueens.util.extensions.isTablet
@@ -23,28 +23,30 @@ fun AppDialogContainer(
     content: @Composable BoxScope.() -> Unit
 ) {
     val configuration = LocalConfiguration.current
-    val screenWidthDp = configuration.screenWidthDp.dp
     val shape = RoundedCornerShape(Dimens.dialogCornerRadius)
 
-    val maxWidth = if (configuration.isTablet) {
-        Dimens.dialogMaxWidthTablet.coerceAtMost(screenWidthDp)
-    } else {
-        (screenWidthDp).coerceAtMost(screenWidthDp)
-    }
+    BoxWithConstraints(modifier = modifier) {
+        val parentMaxWidth = maxWidth
+        val targetMaxWidth = if (configuration.isTablet) {
+            Dimens.dialogMaxWidthTablet.coerceAtMost(parentMaxWidth)
+        } else {
+            parentMaxWidth
+        }
 
-    Box(
-        modifier = modifier
-            .widthIn(
-                min = Dimens.dialogMinWidth,
-                max = maxWidth
-            )
-            .background(
-                color = AppTheme.color.backgroundDialog,
-                shape = shape
-            )
-            .clip(shape)
-            .heightIn(max = maxHeight),
-        content = content
-    )
+        Box(
+            modifier = Modifier
+                .widthIn(
+                    min = Dimens.dialogMinWidth,
+                    max = targetMaxWidth
+                )
+                .background(
+                    color = AppTheme.color.backgroundDialog,
+                    shape = shape
+                )
+                .clip(shape)
+                .heightIn(max = maxHeight),
+            content = content
+        )
+    }
 }
 
