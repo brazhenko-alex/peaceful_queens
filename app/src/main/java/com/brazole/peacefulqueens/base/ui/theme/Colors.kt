@@ -38,6 +38,7 @@ data class Colors(
     val winGreen: Color,
     val background: Color,
     val backgroundDialog: Color,
+    val backgroundDark: Color,
     val surface: Color,
     val iconTint: Color,
     val error: Color,
@@ -61,6 +62,7 @@ data class Colors(
             winGreen = Color(0xFF5B8A3C),
             background = Color(0xFF1F232F),
             backgroundDialog = Color(0xFF242736),
+            backgroundDark = Color(0xFF20212E) ,
             surface = Color(0xFF27232F),
             iconTint = Color(0xFFA2A7BB),
             error = Color(0xFFFF5252),
@@ -76,6 +78,7 @@ data class Colors(
 
 val LocalColors = staticCompositionLocalOf {
     Colors(
+        Color.Unspecified,
         Color.Unspecified,
         Color.Unspecified,
         Color.Unspecified,
