@@ -7,7 +7,7 @@ object Dimens {
     val iconButtonSize: Dp = 28.dp
     val cornerRadius: Dp = 12.dp
     val glowRadius: Dp = 12.dp
-    val spacerInBlock: Dp = 12.dp
+    val spacerInBlock: Dp = 24.dp
     val paddingHorizontal = 16.dp
     val paddingVertical = 12.dp
     val tabletBreakpoint: Dp = 600.dp
