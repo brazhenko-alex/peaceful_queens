@@ -3,12 +3,14 @@ package com.brazole.peacefulqueens.bestScores.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.brazole.peacefulqueens.R
 import com.brazole.peacefulqueens.base.ui.composables.AppDialogContainer
 import com.brazole.peacefulqueens.base.ui.composables.DialogHeader
+import com.brazole.peacefulqueens.base.ui.composables.DialogQueens
 import com.brazole.peacefulqueens.base.ui.composables.LoadingCompose
 import com.brazole.peacefulqueens.base.ui.composables.NeonGlowButton
 import com.brazole.peacefulqueens.base.ui.theme.AppTheme
@@ -66,9 +69,12 @@ fun BestScoresDialog(
             }
         }
         if (uiState.showClearConfirmationDialog) {
-            ClearConfirmDialog(
+            DialogQueens(
+                message = stringResource(R.string.are_you_sure_you_want_to_clear_best_score_data),
                 onConfirm = callbacks.onClearDialogConfirm,
-                onDismiss = callbacks.onClearDialogDismiss
+                onDismiss = callbacks.onClearDialogDismiss,
+                textPositive = stringResource(R.string.clear_all),
+                textNegative = stringResource(R.string.cancel)
             )
         }
         if (uiState.isLoading) {
@@ -84,62 +90,75 @@ private fun ScoreTable(
     onClearAll: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        DialogHeader(
-            title = stringResource(R.string.best_scores),
-            onDismiss = onDismiss
-        )
-        SpacerInDialog()
+    BoxWithConstraints {
+        val isLandscape = maxWidth > maxHeight
+        val maxListHeight = if (isLandscape) maxHeight * 0.4f else maxHeight * 0.6f
 
-        TableHeader()
-
-        ScoreHorizontalDivider()
-
-        LazyColumn(
-            modifier = Modifier.weight(
-                weight = 1f,
-                fill = false
-            )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(scores) { score ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = Dimens.paddingVertical),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = stringResource(R.string.board_size_x, score.boardSize, score.boardSize),
-                        style = AppTheme.typography.text
+            DialogHeader(
+                title = stringResource(R.string.best_scores),
+                onDismiss = onDismiss
+            )
+            SpacerInDialog()
+
+            TableHeader()
+
+            ScoreHorizontalDivider()
+
+            LazyColumn(
+                modifier = Modifier
+                    .heightIn(max = maxListHeight)
+                    .weight(
+                        weight = 1f,
+                        fill = false
                     )
-                    Text(
-                        text = score.time,
-                        style = AppTheme.typography.text
-                    )
+            ) {
+                items(scores) { score ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = Dimens.paddingVertical),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = stringResource(
+                                R.string.board_size_x,
+                                score.boardSize,
+                                score.boardSize
+                            ),
+                            style = AppTheme.typography.text
+                        )
+                        Text(
+                            text = score.time,
+                            style = AppTheme.typography.text
+                        )
+                    }
+                    ScoreHorizontalDivider()
                 }
-                ScoreHorizontalDivider()
             }
+            SpacerInDialog()
+
+            if (queensLeft > 0) {
+                Text(
+                    text = pluralStringResource(
+                        id = R.plurals.place_more_queens_might_appear_here,
+                        count = queensLeft,
+                        queensLeft
+                    ),
+                    style = AppTheme.typography.text,
+                    textAlign = TextAlign.Center
+                )
+
+                SpacerInDialog()
+            }
+
+            NeonGlowButton(
+                text = stringResource(R.string.clear_all),
+                onClick = onClearAll
+            )
         }
-        SpacerInDialog()
-
-        Text(
-            text = pluralStringResource(
-                id = R.plurals.place_more_queens_might_appear_here,
-                count = queensLeft,
-                queensLeft
-            ),
-            style = AppTheme.typography.text,
-            textAlign = TextAlign.Center
-        )
-
-        SpacerInDialog()
-
-        NeonGlowButton(
-            text = stringResource(R.string.clear_all),
-            onClick = onClearAll
-        )
     }
 }
 
@@ -180,43 +199,51 @@ private fun EmptyState(
     queensLeft: Int,
     onDismiss: () -> Unit
 ) {
-    Column(
-        modifier = Modifier.padding(vertical = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(32.dp))
+    BoxWithConstraints {
+        val isLandscape = maxWidth > maxHeight
+        val iconSize = if (isLandscape) 48.dp else 64.dp
+        val spacerSize = if (isLandscape) 16.dp else 32.dp
 
-        Icon(
-            painter = painterResource(R.drawable.ic_trophy),
-            contentDescription = "No Scores",
-            tint = AppTheme.color.textPrimary,
-            modifier = Modifier.size(64.dp)
-        )
-        SpacerInDialog()
-        Text(
-            text = stringResource(R.string.best_scores_empty),
-            style = AppTheme.typography.text,
-            textAlign = TextAlign.Center
-        )
+        Column(
+            modifier = Modifier.padding(vertical = spacerSize),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(spacerSize))
 
-        SpacerInDialog()
+            Icon(
+                painter = painterResource(R.drawable.ic_trophy),
+                contentDescription = "No Scores",
+                tint = AppTheme.color.textPrimary,
+                modifier = Modifier.size(iconSize)
+            )
+            Spacer(modifier = Modifier.height(spacerSize))
+            Text(
+                text = stringResource(R.string.best_scores_empty),
+                style = AppTheme.typography.text,
+                textAlign = TextAlign.Center
+            )
 
-        Text(
-            text = pluralStringResource(
-                id = R.plurals.place_more_queens,
-                count = queensLeft,
-                queensLeft
-            ),
-            style = AppTheme.typography.text,
-            textAlign = TextAlign.Center
-        )
+            Spacer(modifier = Modifier.height(spacerSize))
 
-        SpacerInDialog()
+            if (queensLeft > 0) {
+                Text(
+                    text = pluralStringResource(
+                        id = R.plurals.place_more_queens,
+                        count = queensLeft,
+                        queensLeft
+                    ),
+                    style = AppTheme.typography.text,
+                    textAlign = TextAlign.Center
+                )
 
-        NeonGlowButton(
-            text = stringResource(R.string.best_scores_close),
-            onClick = onDismiss,
-        )
+                Spacer(modifier = Modifier.height(spacerSize))
+            }
+
+            NeonGlowButton(
+                text = stringResource(R.string.best_scores_close),
+                onClick = onDismiss,
+            )
+        }
     }
 }
 
@@ -230,6 +257,11 @@ private val dummyScores = listOf(
     BestScore(boardSize = 6, time = "02:15"),
     BestScore(boardSize = 7, time = "03:00"),
     BestScore(boardSize = 8, time = "04:20"),
+    BestScore(boardSize = 9, time = "04:20"),
+    BestScore(boardSize = 10, time = "04:20"),
+    BestScore(boardSize = 11, time = "04:20"),
+    BestScore(boardSize = 12, time = "04:20"),
+    BestScore(boardSize = 13, time = "04:20"),
 ).toImmutableList()
 
 @Preview(showBackground = true, device = PIXEL_2)
