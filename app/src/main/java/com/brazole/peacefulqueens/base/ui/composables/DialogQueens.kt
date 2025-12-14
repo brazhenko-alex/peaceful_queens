@@ -30,8 +30,8 @@ import com.brazole.peacefulqueens.base.ui.theme.Dimens
 fun DialogQueens(
     message: String,
     title: String? = null,
-    textNegative: String = stringResource(R.string.ok),
-    textPositive: String = stringResource(R.string.cancel),
+    textPositive: String = stringResource(R.string.ok),
+    textNegative: String = stringResource(R.string.cancel),
     dismissable: Boolean = true,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
@@ -67,7 +67,7 @@ fun DialogQueens(
                         modifier = Modifier.weight(.5f),
                         onClick = onDismiss
                     ) {
-                        DialogButtonText(text = textPositive)
+                        DialogButtonText(text = textNegative)
                     }
                     Button(
                         modifier = Modifier.weight(.5f),
@@ -76,7 +76,7 @@ fun DialogQueens(
                             onDismiss()
                         }
                     ) {
-                        DialogButtonText(text = textNegative)
+                        DialogButtonText(text = textPositive)
                     }
                 }
             }
@@ -110,8 +110,8 @@ private fun DialogQueensPreviewEmpty() {
                 message = "",
                 onConfirm = {},
                 onDismiss = {},
-                textNegative = "",
-                textPositive = ""
+                textPositive = "",
+                textNegative = ""
             )
         }
     }
@@ -132,8 +132,8 @@ private fun DialogQueensPreview() {
                 message = "Some very Important message",
                 onConfirm = {},
                 onDismiss = {},
-                textNegative = "OK",
-                textPositive = "Cancel"
+                textPositive = "OK",
+                textNegative = "Cancel"
             )
         }
     }
@@ -157,8 +157,8 @@ private fun DialogQueensPreviewLongText() {
                 message = lorem,
                 onConfirm = {},
                 onDismiss = {},
-                textNegative = lorem,
-                textPositive = lorem
+                textPositive = lorem,
+                textNegative = lorem
             )
         }
     }
@@ -180,8 +180,8 @@ private fun DialogQueensPreviewWithTitle() {
                 message = "You've successfully placed all 8 queens!\n\nTime: 02:35",
                 onConfirm = {},
                 onDismiss = {},
-                textNegative = "Play Again",
-                textPositive = "New Size"
+                textPositive = "Play Again",
+                textNegative = "New Size"
             )
         }
     }
