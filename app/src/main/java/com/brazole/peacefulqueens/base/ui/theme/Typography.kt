@@ -108,7 +108,7 @@ private fun TypographyBlock(textStyleName: String, style: TextStyle) {
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun TypographyPreview1() {
+private fun TypographyPreview1() {
     AppTheme {
         Box(modifier = Modifier.background(color = AppTheme.color.background)) {
             Preview0()

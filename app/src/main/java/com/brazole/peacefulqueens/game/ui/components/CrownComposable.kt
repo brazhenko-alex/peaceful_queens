@@ -89,7 +89,7 @@ fun CrownComposable(
 @Preview(showBackground = true, backgroundColor = 0xFF121212)
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
-fun PreviewPurpleComposable() {
+private fun PreviewPurpleComposable() {
     AppTheme {
         Column(
             modifier = Modifier.padding(12.dp),

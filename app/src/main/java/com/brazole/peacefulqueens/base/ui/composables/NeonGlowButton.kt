@@ -87,7 +87,7 @@ fun NeonGlowButton(
 
 @Preview
 @Composable
-fun NeonButtonPreview() {
+private fun NeonButtonPreview() {
     AppTheme {
         Column(
             modifier = Modifier
