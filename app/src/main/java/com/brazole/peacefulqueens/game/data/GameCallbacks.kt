@@ -7,10 +7,7 @@ class GameCallbacks(
     val onWinDismiss: () -> Unit,
     val onViewBestScores: () -> Unit,
     val onSettingsClick: () -> Unit,
-    val onMenuDismiss: () -> Unit,
-    val onNewBoardSizeConfirm: (Int) -> Unit,
-    val onShowNewGameConfirmDialog: () -> Unit,
-    val onDismissConfirmDialog: () -> Unit,
+    val menuDialogCallbacks: MenuDialogCallbacks,
     val onShowResetConfirmDialog: () -> Unit,
     val onResetConfirm: () -> Unit,
     val onDismissResetConfirmDialog: () -> Unit

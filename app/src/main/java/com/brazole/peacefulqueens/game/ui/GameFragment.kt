@@ -12,6 +12,7 @@ import com.brazole.peacefulqueens.base.ui.baseComposeView
 import com.brazole.peacefulqueens.bestScores.ui.BestScoresDialogFragment
 import com.brazole.peacefulqueens.game.data.GameCallbacks
 import com.brazole.peacefulqueens.game.data.GameUiState
+import com.brazole.peacefulqueens.game.data.MenuDialogCallbacks
 import com.brazole.peacefulqueens.game.data.ShowBestScoresDialog
 import com.brazole.peacefulqueens.game.viewModel.GameViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,10 +31,12 @@ class GameFragment() : BaseComposeFragment<GameViewModel, GameUiState>() {
             onWinDismiss = viewModel::onWinDismiss,
             onViewBestScores = viewModel::onViewBestScores,
             onSettingsClick = viewModel::onSettingsClick,
-            onMenuDismiss = viewModel::onMenuDismiss,
-            onNewBoardSizeConfirm = viewModel::onNewBoardSizeConfirm,
-            onShowNewGameConfirmDialog = viewModel::onShowConfirmDialog,
-            onDismissConfirmDialog = viewModel::onDismissConfirmDialog,
+            menuDialogCallbacks = MenuDialogCallbacks(
+                onDismiss = viewModel::onMenuDismiss,
+                onConfirmDialogConfirm = viewModel::onNewBoardSizeConfirm,
+                onShowNewGameConfirmDialog = viewModel::onShowConfirmDialog,
+                onConfirmDialogDismiss = viewModel::onDismissConfirmDialog
+            ),
             onHintClick = viewModel::onHintClick,
             onShowResetConfirmDialog = viewModel::onShowResetConfirmDialog,
             onResetConfirm = viewModel::onResetConfirm,
