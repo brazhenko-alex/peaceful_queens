@@ -37,7 +37,7 @@ fun CloseShadowButton(
     shadowColor: Color = AppTheme.color.iconTint,
     shadowRadius: Dp = 4.dp,
     shadowOffsetY: Dp = 3.dp,
-    size: Dp = 24.dp,
+    size: Dp = 32.dp,
 ) {
     val density = LocalDensity.current
     val shadowRadiusPx = with(density) { shadowRadius.toPx() }
