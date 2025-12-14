@@ -73,8 +73,8 @@ fun BestScoresDialog(
                 message = stringResource(R.string.are_you_sure_you_want_to_clear_best_score_data),
                 onConfirm = callbacks.onClearDialogConfirm,
                 onDismiss = callbacks.onClearDialogDismiss,
-                textPositive = stringResource(R.string.clear_all),
-                textNegative = stringResource(R.string.cancel)
+                textNegative = stringResource(R.string.clear_all),
+                textPositive = stringResource(R.string.cancel)
             )
         }
         if (uiState.isLoading) {
