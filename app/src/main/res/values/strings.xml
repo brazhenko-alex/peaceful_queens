@@ -4,8 +4,8 @@
     <string name="game_reset">Reset</string>
 
     <string name="win_title">Congratulations!</string>
-    <string name="win_message">You solved the %1$d-Queens puzzle!</string>
     <string name="win_time">Time: %1$s</string>
+    <string name="win_message">You solved the %1$d-Queens puzzle!\n\nTime: %2$s</string>
     <string name="win_play_again">Play Again</string>
     <string name="win_new_size">Try Different Size</string>
 
