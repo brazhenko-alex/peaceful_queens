@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.brazole.peacefulqueens.base.ui.theme.AppTheme
-import com.brazole.peacefulqueens.base.ui.theme.Dimens
 
 @Composable
 fun NeonGlowButton(
@@ -39,7 +38,7 @@ fun NeonGlowButton(
     modifier: Modifier = Modifier,
     glowColor: Color = AppTheme.color.queenMagenta,
     containerColor: Color = AppTheme.color.background,
-    glowRadius: Dp = Dimens.glowRadius,
+    glowRadius: Dp = 12.dp,
 ) {
     val glowRadiusPx = with(LocalDensity.current) { glowRadius.toPx() }
 
