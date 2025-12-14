@@ -27,20 +27,20 @@ class GameFragment() : BaseComposeFragment<GameViewModel, GameUiState>() {
 
         val callBacks = GameCallbacks(
             onCellClick = viewModel::onCellClick,
-            onResetClick = viewModel::onResetGame,
-            onWinDismiss = viewModel::onWinDismiss,
-            onViewBestScores = viewModel::onViewBestScores,
+            onHintClick = viewModel::onHintClick,
+            onGameWonDialogDismiss = viewModel::onGameWonDialogDismiss,
+            onBestScoresView = viewModel::onBestScoresView,
             onSettingsClick = viewModel::onSettingsClick,
             menuDialogCallbacks = MenuDialogCallbacks(
-                onDismiss = viewModel::onMenuDismiss,
-                onConfirmDialogConfirm = viewModel::onNewBoardSizeConfirm,
-                onShowNewGameConfirmDialog = viewModel::onShowConfirmDialog,
-                onConfirmDialogDismiss = viewModel::onDismissConfirmDialog
+                onMenuDialogDismiss = viewModel::onMenuDialogDismiss,
+                onNewGameConfirmDialogShow = viewModel::onNewGameConfirmDialogShow,
+                onNewGameConfirmDialogConfirm = viewModel::onNewGameConfirmDialogConfirm,
+                onNewGameConfirmDialogDismiss = viewModel::onNewGameConfirmDialogDismiss
             ),
-            onHintClick = viewModel::onHintClick,
-            onShowResetConfirmDialog = viewModel::onShowResetConfirmDialog,
-            onResetConfirm = viewModel::onResetConfirm,
-            onDismissResetConfirmDialog = viewModel::onDismissResetConfirmDialog
+            onResetClick = viewModel::onResetClick,
+            onResetConfirmDialogShow = viewModel::onResetConfirmDialogShow,
+            onResetConfirmDialogConfirm = viewModel::onResetConfirmDialogConfirm,
+            onResetConfirmDialogDismiss = viewModel::onResetConfirmDialogDismiss
         )
 
         return baseComposeView(requireContext()) {

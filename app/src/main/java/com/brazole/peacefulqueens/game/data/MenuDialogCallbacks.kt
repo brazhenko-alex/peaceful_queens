@@ -1,9 +1,9 @@
 package com.brazole.peacefulqueens.game.data
 
 class MenuDialogCallbacks(
-    val onDismiss: () -> Unit,
-    val onConfirmDialogConfirm: (Int) -> Unit,
-    val onShowNewGameConfirmDialog: () -> Unit,
-    val onConfirmDialogDismiss: () -> Unit
+    val onMenuDialogDismiss: () -> Unit,
+    val onNewGameConfirmDialogShow: () -> Unit,
+    val onNewGameConfirmDialogConfirm: (Int) -> Unit,
+    val onNewGameConfirmDialogDismiss: () -> Unit
 )
 

@@ -40,7 +40,7 @@ fun MenuDialog(
 ) {
     var selectedBoardSize by rememberSaveable { mutableIntStateOf(currentBoardSize) }
 
-    Dialog(onDismissRequest = { callbacks.onDismiss() }) {
+    Dialog(onDismissRequest = { callbacks.onMenuDialogDismiss() }) {
         AppDialogContainer {
             Column(
                 modifier = Modifier.padding(
@@ -51,7 +51,7 @@ fun MenuDialog(
             ) {
                 DialogHeader(
                     title = stringResource(R.string.settings),
-                    onDismiss = callbacks.onDismiss
+                    onDismiss = callbacks.onMenuDialogDismiss
                 )
 
                 SpacerInBlock()
@@ -82,7 +82,7 @@ fun MenuDialog(
                 SpacerInBlock()
 
                 Button(
-                    onClick = callbacks.onShowNewGameConfirmDialog,
+                    onClick = callbacks.onNewGameConfirmDialogShow,
                     enabled = selectedBoardSize != currentBoardSize
                 ) {
                     Text(
@@ -98,9 +98,9 @@ fun MenuDialog(
         DialogQueens(
             message = stringResource(R.string.menu_change_board_size_confirmation),
             onConfirm = {
-                callbacks.onConfirmDialogConfirm(selectedBoardSize)
+                callbacks.onNewGameConfirmDialogConfirm(selectedBoardSize)
             },
-            onDismiss = callbacks.onConfirmDialogDismiss
+            onDismiss = callbacks.onNewGameConfirmDialogDismiss
         )
     }
 }
@@ -120,10 +120,10 @@ private fun MenuDialogPreview() {
                 currentBoardSize = 8,
                 showNewGameConfirmDialog = false,
                 callbacks = MenuDialogCallbacks(
-                    onDismiss = {},
-                    onConfirmDialogConfirm = {},
-                    onShowNewGameConfirmDialog = {},
-                    onConfirmDialogDismiss = {}
+                    onMenuDialogDismiss = {},
+                    onNewGameConfirmDialogShow = {},
+                    onNewGameConfirmDialogConfirm = {},
+                    onNewGameConfirmDialogDismiss = {}
                 )
             )
         }
@@ -145,10 +145,10 @@ private fun MenuDialogPreviewSmallBoard() {
                 currentBoardSize = 4,
                 showNewGameConfirmDialog = false,
                 callbacks = MenuDialogCallbacks(
-                    onDismiss = {},
-                    onConfirmDialogConfirm = {},
-                    onShowNewGameConfirmDialog = {},
-                    onConfirmDialogDismiss = {}
+                    onMenuDialogDismiss = {},
+                    onNewGameConfirmDialogShow = {},
+                    onNewGameConfirmDialogConfirm = {},
+                    onNewGameConfirmDialogDismiss = {}
                 )
             )
         }
@@ -170,10 +170,10 @@ private fun MenuDialogPreviewLargeBoard() {
                 currentBoardSize = 15,
                 showNewGameConfirmDialog = false,
                 callbacks = MenuDialogCallbacks(
-                    onDismiss = {},
-                    onConfirmDialogConfirm = {},
-                    onShowNewGameConfirmDialog = {},
-                    onConfirmDialogDismiss = {}
+                    onMenuDialogDismiss = {},
+                    onNewGameConfirmDialogShow = {},
+                    onNewGameConfirmDialogConfirm = {},
+                    onNewGameConfirmDialogDismiss = {}
                 )
             )
         }

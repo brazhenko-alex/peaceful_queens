@@ -73,11 +73,11 @@ fun GameCompose(
             textNegative = stringResource(R.string.win_new_size),
             dismissable = false,
             onConfirm = {
-                callbacks.onWinDismiss()
+                callbacks.onGameWonDialogDismiss()
                 callbacks.onResetClick()
             },
             onDismiss = {
-                callbacks.onWinDismiss()
+                callbacks.onGameWonDialogDismiss()
             }
         )
     }
@@ -98,11 +98,11 @@ fun GameCompose(
             textNegative = stringResource(R.string.reset_confirmation_cancel),
             dismissable = true,
             onConfirm = {
-                callbacks.onResetConfirm()
-                callbacks.onDismissResetConfirmDialog()
+                callbacks.onResetConfirmDialogConfirm()
+                callbacks.onResetConfirmDialogDismiss()
             },
             onDismiss = {
-                callbacks.onDismissResetConfirmDialog()
+                callbacks.onResetConfirmDialogDismiss()
             }
         )
     }
@@ -135,7 +135,7 @@ private fun GameComposePortrait(
         SpacerInBlock()
 
         ControlRow(
-            onResetClick = callbacks.onShowResetConfirmDialog,
+            onResetClick = callbacks.onResetConfirmDialogShow,
             onHintClick = callbacks.onHintClick,
             hintMode = uiState.hintMode
         )
@@ -166,7 +166,7 @@ private fun GameComposeLandscape(
             )
             SpacerInBlock()
             ControlRow(
-                onResetClick = callbacks.onShowResetConfirmDialog,
+                onResetClick = callbacks.onResetConfirmDialogShow,
                 onHintClick = callbacks.onHintClick,
                 hintMode = uiState.hintMode
             )
@@ -195,7 +195,7 @@ private fun GameHeaderSection(
 ) {
     GameHeader(
         onSettingsClick = callbacks.onSettingsClick,
-        onBestScoreClick = callbacks.onViewBestScores
+        onBestScoreClick = callbacks.onBestScoresView
     )
 
     SpacerInBlock()
@@ -209,20 +209,20 @@ private fun GameHeaderSection(
 
 private val dummyCallbacks = GameCallbacks(
     onCellClick = {},
-    onResetClick = {},
     onHintClick = {},
-    onWinDismiss = {},
-    onViewBestScores = {},
+    onGameWonDialogDismiss = {},
+    onBestScoresView = {},
     onSettingsClick = {},
     menuDialogCallbacks = MenuDialogCallbacks(
-        onDismiss = {},
-        onConfirmDialogConfirm = {},
-        onShowNewGameConfirmDialog = {},
-        onConfirmDialogDismiss = {}
+        onMenuDialogDismiss = {},
+        onNewGameConfirmDialogShow = {},
+        onNewGameConfirmDialogConfirm = {},
+        onNewGameConfirmDialogDismiss = {}
     ),
-    onShowResetConfirmDialog = {},
-    onResetConfirm = {},
-    onDismissResetConfirmDialog = {}
+    onResetClick = {},
+    onResetConfirmDialogShow = {},
+    onResetConfirmDialogConfirm = {},
+    onResetConfirmDialogDismiss = {}
 )
 
 @Preview(name = "Portrait - Empty Board 8x8", showBackground = true, widthDp = 360, heightDp = 800)
