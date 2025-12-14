@@ -21,11 +21,6 @@ class BestScoresRepository @Inject constructor(
         }
     }
 
-    fun getBestScore(boardSize: Int): Long? {
-        val key = bestScoreKey(boardSize)
-        return getBestScore(key)
-    }
-
     suspend fun getAllBestScores(): List<BestScore> {
         val response = getBestScoreFromVeryRemoteRepository()
         val mappedItems = response.mapToBestScores(timeFormatter)
