@@ -12,7 +12,6 @@ data class GameUiState(
     val queensRemaining: Int = boardSize,
     val elapsedTimeFormatted: String = "00:00",
     val cellList: ImmutableList<Cell> = persistentListOf(),
-    val isTimerRunning: Boolean = false,
     val showMenuDialog: Boolean = false,
     val showNewGameConfirmDialog: Boolean = false,
     val showGameWonDialog: Boolean = false,
