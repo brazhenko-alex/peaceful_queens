@@ -46,6 +46,7 @@
     <string name="menu_change_board_size_confirmation">Starting a new game will reset your current progress. Continue?</string>
     <string name="menu_continue">Continue</string>
     <string name="min_board_size">Min: %1$d</string>
+    <string name="ok">OK</string>
 
     <plurals name="place_more_queens">
         <item quantity="one">You only need to place %d more queen to get into this table.</item>
