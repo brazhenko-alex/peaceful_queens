@@ -110,7 +110,7 @@ fun createPreviewCells(
     showAttacked: Boolean = false
 ): ImmutableList<Cell> {
     val conflictDetector = ConflictDetector()
-    
+
     val cells = buildList {
         for (row in 0 until boardSize) {
             for (column in 0 until boardSize) {
@@ -126,28 +126,38 @@ fun createPreviewCells(
             }
         }
     }
-    
+
     if (!showAttacked) {
         return cells.map { cell ->
             cell.copy(conflict = conflictPositions.contains(cell.row to cell.column))
         }.toImmutableList()
     }
-    
+
     val queensCells = cells.filter { it.hasQueen }
-    
+
     return cells.map { cell ->
         val isAttacked = queensCells.any { queen ->
-            conflictDetector.isAttacking(queen, cell)
+            conflictDetector.isAttacking(
+                queen.row,
+                queen.column,
+                cell.row,
+                cell.column
+            )
         }
-        
+
         val hasConflict = if (cell.hasQueen) {
             queensCells.any { otherQueen ->
-                otherQueen != cell && conflictDetector.isAttacking(otherQueen, cell)
+                otherQueen != cell && conflictDetector.isAttacking(
+                    otherQueen.row,
+                    otherQueen.column,
+                    cell.row,
+                    cell.column
+                )
             }
         } else {
             false
         }
-        
+
         cell.copy(
             attacked = isAttacked,
             conflict = hasConflict
