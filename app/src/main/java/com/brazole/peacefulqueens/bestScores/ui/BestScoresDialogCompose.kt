@@ -103,9 +103,6 @@ private fun ScoreTable(
             )
             SpacerInDialog()
 
-            TableHeader()
-
-            ScoreHorizontalDivider()
 
             LazyColumn(
                 modifier = Modifier
@@ -115,6 +112,14 @@ private fun ScoreTable(
                         fill = false
                     )
             ) {
+                stickyHeader {
+                    Column(modifier = Modifier.background(color = AppTheme.color.backgroundDialog)) {
+                        TableHeader()
+                        Spacer(modifier = Modifier.height(Dimens.paddingVertical))
+                        ScoreHorizontalDivider()
+                    }
+                }
+
                 items(scores) { score ->
                     Row(
                         modifier = Modifier
@@ -165,9 +170,7 @@ private fun ScoreTable(
 @Composable
 private fun TableHeader() {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
@@ -199,51 +202,48 @@ private fun EmptyState(
     queensLeft: Int,
     onDismiss: () -> Unit
 ) {
-    BoxWithConstraints {
-        val isLandscape = maxWidth > maxHeight
-        val iconSize = if (isLandscape) 48.dp else 64.dp
-        val spacerSize = if (isLandscape) 16.dp else 32.dp
+    Column(
+        modifier = Modifier.padding(vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
-        Column(
-            modifier = Modifier.padding(vertical = spacerSize),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(spacerSize))
+        SpacerInDialog()
 
-            Icon(
-                painter = painterResource(R.drawable.ic_trophy),
-                contentDescription = "No Scores",
-                tint = AppTheme.color.textPrimary,
-                modifier = Modifier.size(iconSize)
-            )
-            Spacer(modifier = Modifier.height(spacerSize))
+        Icon(
+            modifier = Modifier.size(64.dp),
+            painter = painterResource(R.drawable.ic_trophy),
+            contentDescription = stringResource(R.string.no_scores),
+            tint = AppTheme.color.textPrimary,
+        )
+
+        SpacerInDialog()
+
+        Text(
+            text = stringResource(R.string.best_scores_empty),
+            style = AppTheme.typography.text,
+            textAlign = TextAlign.Center
+        )
+
+        SpacerInDialog()
+
+        if (queensLeft > 0) {
             Text(
-                text = stringResource(R.string.best_scores_empty),
+                text = pluralStringResource(
+                    id = R.plurals.place_more_queens,
+                    count = queensLeft,
+                    queensLeft
+                ),
                 style = AppTheme.typography.text,
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(spacerSize))
-
-            if (queensLeft > 0) {
-                Text(
-                    text = pluralStringResource(
-                        id = R.plurals.place_more_queens,
-                        count = queensLeft,
-                        queensLeft
-                    ),
-                    style = AppTheme.typography.text,
-                    textAlign = TextAlign.Center
-                )
-
-                Spacer(modifier = Modifier.height(spacerSize))
-            }
-
-            NeonGlowButton(
-                text = stringResource(R.string.best_scores_close),
-                onClick = onDismiss,
-            )
+            SpacerInDialog()
         }
+
+        NeonGlowButton(
+            text = stringResource(R.string.best_scores_close),
+            onClick = onDismiss,
+        )
     }
 }
 
