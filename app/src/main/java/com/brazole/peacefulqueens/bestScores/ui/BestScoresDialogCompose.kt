@@ -49,37 +49,39 @@ fun BestScoresDialog(
     callbacks: BestScoresCallbacks,
 ) {
     AppDialogContainer {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (uiState.scores.isNotEmpty()) {
-                ScoreTable(
-                    scores = uiState.scores,
-                    queensLeft = uiState.queensLeft,
-                    onClearAll = callbacks.onClearAll,
-                    onDismiss = callbacks.onDismiss
-                )
-            } else if (uiState.isLoading.not()) {
-                EmptyState(
-                    queensLeft = uiState.queensLeft,
-                    onDismiss = callbacks.onDismiss
-                )
+        when (uiState.isLoading) {
+            true -> LoadingCompose()
+            false -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if (uiState.scores.isNotEmpty()) {
+                        ScoreTable(
+                            scores = uiState.scores,
+                            queensLeft = uiState.queensLeft,
+                            onClearAll = callbacks.onClearAll,
+                            onDismiss = callbacks.onDismiss
+                        )
+                    } else {
+                        EmptyState(
+                            queensLeft = uiState.queensLeft,
+                            onDismiss = callbacks.onDismiss
+                        )
+                    }
+                }
+                if (uiState.showClearConfirmationDialog) {
+                    DialogQueens(
+                        message = stringResource(R.string.are_you_sure_you_want_to_clear_best_score_data),
+                        onConfirm = callbacks.onClearDialogConfirm,
+                        onDismiss = callbacks.onClearDialogDismiss,
+                        textNegative = stringResource(R.string.cancel),
+                        textPositive = stringResource(R.string.clear_all),
+                    )
+                }
             }
-        }
-        if (uiState.showClearConfirmationDialog) {
-            DialogQueens(
-                message = stringResource(R.string.are_you_sure_you_want_to_clear_best_score_data),
-                onConfirm = callbacks.onClearDialogConfirm,
-                onDismiss = callbacks.onClearDialogDismiss,
-                textNegative = stringResource(R.string.clear_all),
-                textPositive = stringResource(R.string.cancel)
-            )
-        }
-        if (uiState.isLoading) {
-            LoadingCompose()
         }
     }
 }
