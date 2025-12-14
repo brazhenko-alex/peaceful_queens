@@ -47,6 +47,11 @@
     <string name="menu_continue">Continue</string>
     <string name="min_board_size">Min: %1$d</string>
     <string name="ok">OK</string>
+    <string name="hint">Show Attacked Cells</string>
+    <string name="reset_confirmation_title">Reset Game?</string>
+    <string name="reset_confirmation_message">Are you sure you want to reset the game? All progress will be lost.</string>
+    <string name="reset_confirmation_confirm">Reset</string>
+    <string name="reset_confirmation_cancel">Cancel</string>
 
     <plurals name="place_more_queens">
         <item quantity="one">You only need to place %d more queen to get into this table.</item>
