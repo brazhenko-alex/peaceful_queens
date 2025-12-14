@@ -29,12 +29,14 @@ import com.brazole.peacefulqueens.base.ui.theme.Dimens
 @Composable
 fun DialogQueens(
     message: String,
+    title: String? = null,
     textNegative: String = stringResource(R.string.ok),
     textPositive: String = stringResource(R.string.cancel),
+    dismissable: Boolean = true,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    Dialog(onDismissRequest = { onDismiss() }) {
+    Dialog(onDismissRequest = { if (dismissable) onDismiss() }) {
         AppDialogContainer {
             Column(
                 modifier = Modifier.padding(
@@ -43,6 +45,15 @@ fun DialogQueens(
                 ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                title?.let {
+                    Text(
+                        text = it,
+                        style = AppTheme.typography.title,
+                        color = AppTheme.color.winGreen,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
                 Text(
                     text = message,
                     style = AppTheme.typography.textMedium,
@@ -148,6 +159,29 @@ private fun DialogQueensPreviewLongText() {
                 onDismiss = {},
                 textNegative = lorem,
                 textPositive = lorem
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, device = PIXEL_2)
+@Preview(showBackground = true, device = PIXEL_C)
+@Composable
+private fun DialogQueensPreviewWithTitle() {
+    AppTheme {
+        Box(
+            modifier = Modifier
+                .background(AppTheme.color.background)
+                .padding(48.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            DialogQueens(
+                title = "Congratulations!",
+                message = "You've successfully placed all 8 queens!\n\nTime: 02:35",
+                onConfirm = {},
+                onDismiss = {},
+                textNegative = "Play Again",
+                textPositive = "New Size"
             )
         }
     }
