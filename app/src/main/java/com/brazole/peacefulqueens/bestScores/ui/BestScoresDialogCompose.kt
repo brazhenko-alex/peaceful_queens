@@ -35,6 +35,7 @@ import com.brazole.peacefulqueens.base.ui.composables.DialogHeader
 import com.brazole.peacefulqueens.base.ui.composables.DialogQueens
 import com.brazole.peacefulqueens.base.ui.composables.LoadingCompose
 import com.brazole.peacefulqueens.base.ui.composables.NeonGlowButton
+import com.brazole.peacefulqueens.base.ui.composables.SpacerInBlock
 import com.brazole.peacefulqueens.base.ui.theme.AppTheme
 import com.brazole.peacefulqueens.base.ui.theme.Dimens
 import com.brazole.peacefulqueens.bestScores.data.BestScore
@@ -101,7 +102,7 @@ private fun ScoreTable(
                 title = stringResource(R.string.best_scores),
                 onDismiss = onDismiss
             )
-            SpacerInDialog()
+            SpacerInBlock()
 
 
             LazyColumn(
@@ -143,7 +144,7 @@ private fun ScoreTable(
                     ScoreHorizontalDivider()
                 }
             }
-            SpacerInDialog()
+            SpacerInBlock()
 
             if (queensLeft > 0) {
                 Text(
@@ -156,7 +157,7 @@ private fun ScoreTable(
                     textAlign = TextAlign.Center
                 )
 
-                SpacerInDialog()
+                SpacerInBlock()
             }
 
             NeonGlowButton(
@@ -193,11 +194,6 @@ private fun ScoreHorizontalDivider() {
 }
 
 @Composable
-private fun SpacerInDialog() {
-    Spacer(modifier = Modifier.height(32.dp))
-}
-
-@Composable
 private fun EmptyState(
     queensLeft: Int,
     onDismiss: () -> Unit
@@ -207,7 +203,7 @@ private fun EmptyState(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        SpacerInDialog()
+        SpacerInBlock()
 
         Icon(
             modifier = Modifier.size(64.dp),
@@ -216,7 +212,7 @@ private fun EmptyState(
             tint = AppTheme.color.textPrimary,
         )
 
-        SpacerInDialog()
+        SpacerInBlock()
 
         Text(
             text = stringResource(R.string.best_scores_empty),
@@ -224,7 +220,7 @@ private fun EmptyState(
             textAlign = TextAlign.Center
         )
 
-        SpacerInDialog()
+        SpacerInBlock()
 
         if (queensLeft > 0) {
             Text(
@@ -237,7 +233,7 @@ private fun EmptyState(
                 textAlign = TextAlign.Center
             )
 
-            SpacerInDialog()
+            SpacerInBlock()
         }
 
         NeonGlowButton(
