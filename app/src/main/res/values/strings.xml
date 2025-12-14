@@ -52,15 +52,16 @@
     <string name="reset_confirmation_message">Are you sure you want to reset the game? All progress will be lost.</string>
     <string name="reset_confirmation_confirm">Reset</string>
     <string name="reset_confirmation_cancel">Cancel</string>
+    <string name="close_dialog">Close Dialog</string>
 
     <plurals name="place_more_queens">
-        <item quantity="one">You only need to place %d more queen to get into this table.</item>
-        <item quantity="other">You only need to place %d more queens to get into this table.</item>
+        <item quantity="one">You need to place %d more queen to get into this table.</item>
+        <item quantity="other">You need to place %d more queens to get into this table.</item>
     </plurals>
 
     <plurals name="place_more_queens_might_appear_here">
-        <item quantity="one">You only need to place %d more queen, and your result might appear here.</item>
-        <item quantity="other">You only need to place %d more queens, and your result might appear here.</item>
+        <item quantity="one">You need to place %d more queen, and your result might appear here.</item>
+        <item quantity="other">You need to place %d more queens, and your result might appear here.</item>
     </plurals>
 
 </resources>
