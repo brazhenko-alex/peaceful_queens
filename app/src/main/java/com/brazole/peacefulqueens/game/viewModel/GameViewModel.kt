@@ -4,10 +4,10 @@ import androidx.lifecycle.viewModelScope
 import com.brazole.peacefulqueens.base.viewModel.BaseViewModel
 import com.brazole.peacefulqueens.bestScores.data.BestScoresRepository
 import com.brazole.peacefulqueens.game.data.Cell
+import com.brazole.peacefulqueens.game.data.GameRepository
 import com.brazole.peacefulqueens.game.data.GameUiState
 import com.brazole.peacefulqueens.game.data.ShowBestScoresDialog
 import com.brazole.peacefulqueens.game.domain.GameEngine
-import com.brazole.peacefulqueens.util.Constants.BOARD_SIZE_DEFAULT
 import com.brazole.peacefulqueens.util.TimeFormatter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -18,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GameViewModel @Inject constructor(
     private val gameEngine: GameEngine,
+    private val gameRepository: GameRepository,
     private val bestScoresRepository: BestScoresRepository,
     private val timeFormatter: TimeFormatter
 ) : BaseViewModel<GameUiState>(GameUiState()) {
@@ -28,7 +29,8 @@ class GameViewModel @Inject constructor(
 
     init {
         if (!isInitialized) {
-            initGame(BOARD_SIZE_DEFAULT)
+            val savedBoardSize = gameRepository.getBoardSize()
+            initGame(savedBoardSize)
         }
     }
 
@@ -43,7 +45,8 @@ class GameViewModel @Inject constructor(
                 showNewGameConfirmDialog = false,
                 showMenuDialog = false,
                 showGameWonDialog = false,
-                showResetConfirmDialog = false
+                showResetConfirmDialog = false,
+                isGameFinished = false
             )
         )
         elapsedTime = 0L
@@ -58,7 +61,7 @@ class GameViewModel @Inject constructor(
 
     fun onCellClick(clickedCell: Cell) {
         val currentState = getUiStateValue()
-        if (currentState.showGameWonDialog) return
+        if (currentState.isGameFinished) return
 
         val updatedCells = gameEngine.onCellClick(currentState.cellList, clickedCell)
 
@@ -85,7 +88,7 @@ class GameViewModel @Inject constructor(
                 delay(1000)
                 updateUiState(
                     getUiStateValue().copy(
-                        elapsedTimeFormatted = timeFormatter.formatTime(elapsedTime++)
+                        elapsedTimeFormatted = timeFormatter.formatTime(++elapsedTime)
                     )
                 )
             }
@@ -104,13 +107,28 @@ class GameViewModel @Inject constructor(
         if (isWon) {
             stopTimer()
             bestScoresRepository.saveBestScore(currentState.boardSize, elapsedTime)
-            updateUiState(currentState.copy(showGameWonDialog = true))
+            updateUiState(
+                currentState.copy(
+                    showGameWonDialog = true,
+                    isGameFinished = true
+                )
+            )
         }
     }
 
-    fun onHintClick() = updateUiState(getUiStateValue().copy(hintMode = getUiStateValue().hintMode.not()))
+    fun onGameWonDialogDismiss() = updateUiState(
+        getUiStateValue().copy(
+            showGameWonDialog = false,
+            showMenuDialog = true
+        )
+    )
 
-    fun onGameWonDialogDismiss() = updateUiState(getUiStateValue().copy(showGameWonDialog = false))
+    fun onNewGameConfirmDialogConfirm(newBoardSize: Int) {
+        gameRepository.saveBoardSize(newBoardSize)
+        initGame(newBoardSize)
+    }
+
+    fun onHintClick() = updateUiState(getUiStateValue().copy(hintMode = getUiStateValue().hintMode.not()))
 
     fun onBestScoresView() = sendEvent(ShowBestScoresDialog(getUiStateValue().queensRemaining))
 
@@ -119,8 +137,6 @@ class GameViewModel @Inject constructor(
     fun onMenuDialogDismiss() = updateUiState(getUiStateValue().copy(showMenuDialog = false))
 
     fun onNewGameConfirmDialogShow() = updateUiState(getUiStateValue().copy(showNewGameConfirmDialog = true))
-
-    fun onNewGameConfirmDialogConfirm(newBoardSize: Int) = initGame(newBoardSize)
 
     fun onNewGameConfirmDialogDismiss() = updateUiState(getUiStateValue().copy(showNewGameConfirmDialog = false))
 

@@ -17,4 +17,5 @@ data class GameUiState(
     val showGameWonDialog: Boolean = false,
     val showResetConfirmDialog: Boolean = false,
     val hintMode: Boolean = false,
+    val isGameFinished: Boolean = false,
 ) : UiState

@@ -7,6 +7,7 @@ object Constants {
 }
 
 object PreferencesKeys {
-    const val KEY_BEST_SCORE_PREFIX = "best_score_"
+    const val KEY_BEST_SCORE_PREFIX = "best_score"
+    const val KEY_BOARD_SIZE = "board_size"
 }
 
