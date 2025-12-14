@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.brazole.peacefulqueens.base.ui.theme.AppTheme
 import com.brazole.peacefulqueens.game.data.Cell
+import com.brazole.peacefulqueens.game.domain.ConflictDetector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlin.math.sqrt
@@ -102,6 +103,58 @@ private fun BoardCell(
     }
 }
 
+fun createPreviewCells(
+    boardSize: Int,
+    queensPositions: List<Pair<Int, Int>> = emptyList(),
+    conflictPositions: List<Pair<Int, Int>> = emptyList(),
+    showAttacked: Boolean = false
+): ImmutableList<Cell> {
+    val conflictDetector = ConflictDetector()
+    
+    val cells = buildList {
+        for (row in 0 until boardSize) {
+            for (column in 0 until boardSize) {
+                add(
+                    Cell(
+                        row = row,
+                        column = column,
+                        hasQueen = queensPositions.contains(row to column),
+                        attacked = false,
+                        conflict = false
+                    )
+                )
+            }
+        }
+    }
+    
+    if (!showAttacked) {
+        return cells.map { cell ->
+            cell.copy(conflict = conflictPositions.contains(cell.row to cell.column))
+        }.toImmutableList()
+    }
+    
+    val queensCells = cells.filter { it.hasQueen }
+    
+    return cells.map { cell ->
+        val isAttacked = queensCells.any { queen ->
+            conflictDetector.isAttacking(queen, cell)
+        }
+        
+        val hasConflict = if (cell.hasQueen) {
+            queensCells.any { otherQueen ->
+                otherQueen != cell && conflictDetector.isAttacking(otherQueen, cell)
+            }
+        } else {
+            false
+        }
+        
+        cell.copy(
+            attacked = isAttacked,
+            conflict = hasConflict
+        )
+    }.toImmutableList()
+}
+
 @Preview(
     name = "Chess Board - Empty 8x8",
     showBackground = true,
@@ -111,24 +164,8 @@ private fun BoardCell(
 @Composable
 private fun PreviewChessBoardEmpty8x8() {
     AppTheme {
-        val cellData = buildList {
-            for (row in 0 until 8) {
-                for (column in 0 until 8) {
-                    add(
-                        Cell(
-                            row = row,
-                            column = column,
-                            hasQueen = false,
-                            attacked = false,
-                            conflict = false
-                        )
-                    )
-                }
-            }
-        }.toImmutableList()
-
         ChessBoard(
-            cellData = cellData,
+            cellData = createPreviewCells(boardSize = 8),
             hintMode = false,
             onCellClick = {}
         )
@@ -144,24 +181,11 @@ private fun PreviewChessBoardEmpty8x8() {
 @Composable
 private fun PreviewChessBoardSingleQueen() {
     AppTheme {
-        val cellData = buildList {
-            for (row in 0 until 8) {
-                for (column in 0 until 8) {
-                    add(
-                        Cell(
-                            row = row,
-                            column = column,
-                            hasQueen = row == 0 && column == 0,
-                            attacked = false,
-                            conflict = false
-                        )
-                    )
-                }
-            }
-        }.toImmutableList()
-
         ChessBoard(
-            cellData = cellData,
+            cellData = createPreviewCells(
+                boardSize = 8,
+                queensPositions = listOf(0 to 0)
+            ),
             hintMode = false,
             onCellClick = {}
         )
@@ -177,31 +201,11 @@ private fun PreviewChessBoardSingleQueen() {
 @Composable
 private fun PreviewChessBoardMultipleQueens() {
     AppTheme {
-        val queenPositions = setOf(
-            0 to 0,
-            1 to 4,
-            2 to 7,
-            3 to 5,
-            4 to 2
-        )
-        val cellData = buildList {
-            for (row in 0 until 8) {
-                for (column in 0 until 8) {
-                    add(
-                        Cell(
-                            row = row,
-                            column = column,
-                            hasQueen = queenPositions.contains(row to column),
-                            attacked = false,
-                            conflict = false
-                        )
-                    )
-                }
-            }
-        }.toImmutableList()
-
         ChessBoard(
-            cellData = cellData,
+            cellData = createPreviewCells(
+                boardSize = 8,
+                queensPositions = listOf(0 to 0, 1 to 4, 2 to 7, 3 to 5, 4 to 2)
+            ),
             hintMode = false,
             onCellClick = {}
         )
@@ -217,31 +221,13 @@ private fun PreviewChessBoardMultipleQueens() {
 @Composable
 private fun PreviewChessBoardWithConflicts() {
     AppTheme {
-        val queenPositions = setOf(
-            0 to 0,
-            0 to 1,
-            1 to 1
-        )
-        val cellData = buildList {
-            for (row in 0 until 8) {
-                for (column in 0 until 8) {
-                    val hasQueen = queenPositions.contains(row to column)
-                    val attacked = row == 0 || row == 1 || column == 0 || column == 1
-                    add(
-                        Cell(
-                            row = row,
-                            column = column,
-                            hasQueen = hasQueen,
-                            attacked = attacked,
-                            conflict = hasQueen && attacked
-                        )
-                    )
-                }
-            }
-        }.toImmutableList()
-
         ChessBoard(
-            cellData = cellData,
+            cellData = createPreviewCells(
+                boardSize = 8,
+                queensPositions = listOf(0 to 0, 0 to 1, 1 to 1),
+                conflictPositions = listOf(0 to 0, 0 to 1, 1 to 1),
+                showAttacked = true
+            ),
             hintMode = true,
             onCellClick = {}
         )
@@ -257,30 +243,11 @@ private fun PreviewChessBoardWithConflicts() {
 @Composable
 private fun PreviewChessBoardSmall4x4() {
     AppTheme {
-        val queenPositions = setOf(
-            0 to 1,
-            1 to 3,
-            2 to 0,
-            3 to 2
-        )
-        val cellData = buildList {
-            for (row in 0 until 4) {
-                for (column in 0 until 4) {
-                    add(
-                        Cell(
-                            row = row,
-                            column = column,
-                            hasQueen = queenPositions.contains(row to column),
-                            attacked = false,
-                            conflict = false
-                        )
-                    )
-                }
-            }
-        }.toImmutableList()
-
         ChessBoard(
-            cellData = cellData,
+            cellData = createPreviewCells(
+                boardSize = 4,
+                queensPositions = listOf(0 to 1, 1 to 3, 2 to 0, 3 to 2)
+            ),
             hintMode = false,
             onCellClick = {}
         )
@@ -296,31 +263,11 @@ private fun PreviewChessBoardSmall4x4() {
 @Composable
 private fun PreviewChessBoardLarge12x12() {
     AppTheme {
-        val queenPositions = setOf(
-            0 to 0,
-            1 to 6,
-            2 to 9,
-            3 to 3,
-            4 to 11
-        )
-        val cellData = buildList {
-            for (row in 0 until 12) {
-                for (column in 0 until 12) {
-                    add(
-                        Cell(
-                            row = row,
-                            column = column,
-                            hasQueen = queenPositions.contains(row to column),
-                            attacked = false,
-                            conflict = false
-                        )
-                    )
-                }
-            }
-        }.toImmutableList()
-
         ChessBoard(
-            cellData = cellData,
+            cellData = createPreviewCells(
+                boardSize = 12,
+                queensPositions = listOf(0 to 0, 1 to 6, 2 to 9, 3 to 3, 4 to 11)
+            ),
             hintMode = false,
             onCellClick = {}
         )
@@ -336,29 +283,11 @@ private fun PreviewChessBoardLarge12x12() {
 @Composable
 private fun PreviewChessBoardExtraLarge15x15() {
     AppTheme {
-        val queenPositions = setOf(
-            0 to 0,
-            1 to 2,
-            2 to 4
-        )
-        val cellData = buildList {
-            for (row in 0 until 15) {
-                for (column in 0 until 15) {
-                    add(
-                        Cell(
-                            row = row,
-                            column = column,
-                            hasQueen = queenPositions.contains(row to column),
-                            attacked = false,
-                            conflict = false
-                        )
-                    )
-                }
-            }
-        }.toImmutableList()
-
         ChessBoard(
-            cellData = cellData,
+            cellData = createPreviewCells(
+                boardSize = 15,
+                queensPositions = listOf(0 to 0, 1 to 2, 2 to 4)
+            ),
             hintMode = false,
             onCellClick = {}
         )
@@ -374,34 +303,11 @@ private fun PreviewChessBoardExtraLarge15x15() {
 @Composable
 private fun PreviewChessBoardFullSolution() {
     AppTheme {
-        val queenPositions = setOf(
-            0 to 0,
-            1 to 4,
-            2 to 7,
-            3 to 5,
-            4 to 2,
-            5 to 6,
-            6 to 1,
-            7 to 3
-        )
-        val cellData = buildList {
-            for (row in 0 until 8) {
-                for (column in 0 until 8) {
-                    add(
-                        Cell(
-                            row = row,
-                            column = column,
-                            hasQueen = queenPositions.contains(row to column),
-                            attacked = false,
-                            conflict = false
-                        )
-                    )
-                }
-            }
-        }.toImmutableList()
-
         ChessBoard(
-            cellData = cellData,
+            cellData = createPreviewCells(
+                boardSize = 8,
+                queensPositions = listOf(0 to 0, 1 to 4, 2 to 7, 3 to 5, 4 to 2, 5 to 6, 6 to 1, 7 to 3)
+            ),
             hintMode = false,
             onCellClick = {}
         )
@@ -417,33 +323,13 @@ private fun PreviewChessBoardFullSolution() {
 @Composable
 private fun PreviewChessBoardAllConflicts() {
     AppTheme {
-        val queenPositions = setOf(
-            0 to 0,
-            0 to 1,
-            0 to 2,
-            1 to 0,
-            1 to 1
-        )
-        val cellData = buildList {
-            for (row in 0 until 8) {
-                for (column in 0 until 8) {
-                    val hasQueen = queenPositions.contains(row to column)
-                    val attacked = row <= 1 || column <= 2
-                    add(
-                        Cell(
-                            row = row,
-                            column = column,
-                            hasQueen = hasQueen,
-                            attacked = attacked,
-                            conflict = hasQueen && attacked
-                        )
-                    )
-                }
-            }
-        }.toImmutableList()
-
         ChessBoard(
-            cellData = cellData,
+            cellData = createPreviewCells(
+                boardSize = 8,
+                queensPositions = listOf(4 to 4, 0 to 1, 0 to 2, 1 to 0, 3 to 1),
+                conflictPositions = listOf(4 to 4, 0 to 1, 0 to 2, 1 to 0, 3 to 1),
+                showAttacked = true
+            ),
             hintMode = true,
             onCellClick = {}
         )
@@ -459,24 +345,11 @@ private fun PreviewChessBoardAllConflicts() {
 @Composable
 private fun PreviewChessBoardMinimal3x3() {
     AppTheme {
-        val cellData = buildList {
-            for (row in 0 until 3) {
-                for (column in 0 until 3) {
-                    add(
-                        Cell(
-                            row = row,
-                            column = column,
-                            hasQueen = row == 0 && column == 0,
-                            attacked = false,
-                            conflict = false
-                        )
-                    )
-                }
-            }
-        }.toImmutableList()
-
         ChessBoard(
-            cellData = cellData,
+            cellData = createPreviewCells(
+                boardSize = 3,
+                queensPositions = listOf(0 to 0)
+            ),
             hintMode = false,
             onCellClick = {}
         )
@@ -493,13 +366,7 @@ private fun PreviewChessBoardMinimal3x3() {
 private fun PreviewBoardCellLightEmpty() {
     AppTheme {
         BoardCell(
-            cell = Cell(
-                row = 0,
-                column = 0,
-                hasQueen = false,
-                attacked = false,
-                conflict = false
-            ),
+            cell = createPreviewCells(boardSize = 1)[0],
             hintMode = false,
             onClick = {}
         )
@@ -516,13 +383,7 @@ private fun PreviewBoardCellLightEmpty() {
 private fun PreviewBoardCellDarkEmpty() {
     AppTheme {
         BoardCell(
-            cell = Cell(
-                row = 0,
-                column = 1,
-                hasQueen = false,
-                attacked = false,
-                conflict = false
-            ),
+            cell = createPreviewCells(boardSize = 2)[1],
             hintMode = false,
             onClick = {}
         )
@@ -539,13 +400,10 @@ private fun PreviewBoardCellDarkEmpty() {
 private fun PreviewBoardCellLightWithQueen() {
     AppTheme {
         BoardCell(
-            cell = Cell(
-                row = 0,
-                column = 0,
-                hasQueen = true,
-                attacked = false,
-                conflict = false
-            ),
+            cell = createPreviewCells(
+                boardSize = 1,
+                queensPositions = listOf(0 to 0)
+            )[0],
             hintMode = false,
             onClick = {}
         )
@@ -562,13 +420,10 @@ private fun PreviewBoardCellLightWithQueen() {
 private fun PreviewBoardCellDarkWithQueen() {
     AppTheme {
         BoardCell(
-            cell = Cell(
-                row = 0,
-                column = 1,
-                hasQueen = true,
-                attacked = false,
-                conflict = false
-            ),
+            cell = createPreviewCells(
+                boardSize = 2,
+                queensPositions = listOf(0 to 1)
+            )[1],
             hintMode = false,
             onClick = {}
         )
@@ -585,13 +440,12 @@ private fun PreviewBoardCellDarkWithQueen() {
 private fun PreviewBoardCellConflictWithQueen() {
     AppTheme {
         BoardCell(
-            cell = Cell(
-                row = 0,
-                column = 0,
-                hasQueen = true,
-                attacked = true,
-                conflict = true
-            ),
+            cell = createPreviewCells(
+                boardSize = 1,
+                queensPositions = listOf(0 to 0),
+                conflictPositions = listOf(0 to 0),
+                showAttacked = true
+            )[0],
             hintMode = true,
             onClick = {}
         )
@@ -608,13 +462,11 @@ private fun PreviewBoardCellConflictWithQueen() {
 private fun PreviewBoardCellConflictEmpty() {
     AppTheme {
         BoardCell(
-            cell = Cell(
-                row = 0,
-                column = 0,
-                hasQueen = false,
-                attacked = true,
-                conflict = false
-            ),
+            cell = createPreviewCells(
+                boardSize = 2,
+                queensPositions = listOf(0 to 1),
+                showAttacked = true
+            )[0],
             hintMode = true,
             onClick = {}
         )
