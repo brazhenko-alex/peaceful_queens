@@ -1,7 +1,8 @@
 package com.brazole.peacefulqueens.util
 
 object Constants {
-    const val MIN_BOARD_SIZE = 4
+    const val BOARD_SIZE_MIN = 4
+    const val BOARD_SIZE_DEFAULT = 8
     const val NO_ID = -1
 }
 
