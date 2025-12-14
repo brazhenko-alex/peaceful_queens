@@ -49,7 +49,6 @@ fun InfoRow(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(glowRadius)
             .drawBehind {
                 val paint = android.graphics.Paint().apply {
                     isAntiAlias = true
