@@ -32,7 +32,7 @@ class GameFragment() : BaseComposeFragment<GameViewModel, GameUiState>() {
             onSettingsClick = viewModel::onSettingsClick,
             onMenuDismiss = viewModel::onMenuDismiss,
             onNewBoardSizeConfirm = viewModel::onNewBoardSizeConfirm,
-            onShowConfirmDialog = viewModel::onShowConfirmDialog,
+            onShowNewGameConfirmDialog = viewModel::onShowConfirmDialog,
             onDismissConfirmDialog = viewModel::onDismissConfirmDialog,
             onHintClick = viewModel::onHintClick,
             onShowResetConfirmDialog = viewModel::onShowResetConfirmDialog,
