@@ -73,7 +73,6 @@ fun GameCompose(
             textNegative = stringResource(R.string.win_new_size),
             dismissable = false,
             onConfirm = {
-                callbacks.onGameWonDialogDismiss()
                 callbacks.onResetClick()
             },
             onDismiss = {

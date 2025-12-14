@@ -69,10 +69,7 @@ fun DialogQueens(
                     }
                     Button(
                         modifier = Modifier.weight(.5f),
-                        onClick = {
-                            onConfirm()
-                            onDismiss()
-                        }
+                        onClick = onConfirm
                     ) {
                         DialogButtonText(text = textPositive)
                     }

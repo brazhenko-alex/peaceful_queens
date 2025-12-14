@@ -48,6 +48,7 @@ class BestScoresViewModel @Inject constructor(
 
     fun onClearDialogConfirm() {
         safeViewModelScope.launch {
+            updateUiState(getUiStateValue().copy(showClearConfirmationDialog = false))
             bestScoresRepository.clearAllBestScores()
             loadBestScores()
         }
