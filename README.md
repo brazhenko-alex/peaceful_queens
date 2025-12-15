@@ -43,6 +43,10 @@ An elegant Android puzzle game based on the classic N-Queens problem. Place N qu
 
 > [📹 Watch the Demo Video](https://youtube.com/shorts/nXuf3eWDILQ?si=uavxY9UgUMS3L5JV)
 
+https://github.com/user-attachments/assets/bbe3dfcf-8831-4dca-8358-e9425b4f621e
+
+
+
 ---
 
 ## 🏗️ Architecture
