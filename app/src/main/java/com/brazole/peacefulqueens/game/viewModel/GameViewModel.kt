@@ -8,6 +8,7 @@ import com.brazole.peacefulqueens.game.data.GameRepository
 import com.brazole.peacefulqueens.game.data.GameUiState
 import com.brazole.peacefulqueens.game.data.ShowBestScoresDialog
 import com.brazole.peacefulqueens.game.domain.GameEngine
+import com.brazole.peacefulqueens.util.SoundPlayer
 import com.brazole.peacefulqueens.util.TimeFormatter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -20,7 +21,8 @@ class GameViewModel @Inject constructor(
     private val gameEngine: GameEngine,
     private val gameRepository: GameRepository,
     private val bestScoresRepository: BestScoresRepository,
-    private val timeFormatter: TimeFormatter
+    private val timeFormatter: TimeFormatter,
+    private val soundPlayer: SoundPlayer
 ) : BaseViewModel<GameUiState>(GameUiState()) {
 
     private var timerJob: Job? = null
@@ -62,6 +64,10 @@ class GameViewModel @Inject constructor(
     fun onCellClick(clickedCell: Cell) {
         val currentState = getUiStateValue()
         if (currentState.isGameFinished) return
+
+        if (clickedCell.hasQueen.not()) {
+            soundPlayer.playMoveSound()
+        }
 
         val updatedCells = gameEngine.onCellClick(currentState.cellList, clickedCell)
 
@@ -151,6 +157,7 @@ class GameViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         stopTimer()
+        soundPlayer.release()
     }
 }
 
