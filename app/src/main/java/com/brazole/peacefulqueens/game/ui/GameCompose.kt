@@ -2,16 +2,13 @@ package com.brazole.peacefulqueens.game.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,9 +39,7 @@ fun GameCompose(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
             .displayCutoutPadding()
-            .navigationBarsPadding()
             .background(AppTheme.color.background)
     ) {
         val isLandscape = maxWidth > maxHeight
@@ -140,42 +135,50 @@ private fun GameComposeLandscape(
     uiState: GameUiState,
     callbacks: GameCallbacks,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(48.dp),
-        horizontalArrangement = Arrangement.spacedBy(48.dp)
+    BoxWithConstraints(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier
-                .weight(.6f)
-                .fillMaxHeight(),
-            verticalArrangement = Arrangement.Center
-        ) {
-            GameHeaderSection(
-                uiState = uiState,
-                callbacks = callbacks,
-                isLandscape = true
-            )
-            SpacerInBlock()
-            ControlRow(
-                onResetClick = callbacks.onResetConfirmDialogShow,
-                onHintClick = callbacks.onHintClick,
-                hintMode = uiState.hintMode
-            )
-        }
+        val isTablet = maxWidth >= 900.dp
+        val padding = if (isTablet) 48.dp else 16.dp
+        val spacing = if (isTablet) 48.dp else 8.dp
 
-        Box(
+        Row(
             modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight(),
-            contentAlignment = Alignment.Center
+                .fillMaxSize()
+                .padding(padding),
+            horizontalArrangement = Arrangement.spacedBy(spacing)
         ) {
-            ChessBoard(
-                onCellClick = callbacks.onCellClick,
-                cellData = uiState.cellList,
-                hintMode = uiState.hintMode
-            )
+            Column(
+                modifier = Modifier
+                    .weight(.6f)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                GameHeaderSection(
+                    uiState = uiState,
+                    callbacks = callbacks,
+                    isLandscape = true
+                )
+                SpacerInBlock()
+                ControlRow(
+                    onResetClick = callbacks.onResetConfirmDialogShow,
+                    onHintClick = callbacks.onHintClick,
+                    hintMode = uiState.hintMode
+                )
+            }
+
+            BoxWithConstraints(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+                contentAlignment = Alignment.Center
+            ) {
+                ChessBoard(
+                    onCellClick = callbacks.onCellClick,
+                    cellData = uiState.cellList,
+                    hintMode = uiState.hintMode
+                )
+            }
         }
     }
 }
@@ -424,6 +427,7 @@ private fun PreviewGameComposeTabletPortrait() {
 }
 
 @Preview(name = "Tablet Landscape", showBackground = true, widthDp = 1024, heightDp = 768)
+@Preview(name = "Phone Landscape", showBackground = true, widthDp = 800, heightDp = 360)
 @Composable
 private fun PreviewGameComposeTabletLandscape() {
     AppTheme {
