@@ -31,6 +31,7 @@ import com.brazole.peacefulqueens.game.ui.components.ControlRow
 import com.brazole.peacefulqueens.game.ui.components.GameHeader
 import com.brazole.peacefulqueens.game.ui.components.InfoRow
 import com.brazole.peacefulqueens.game.ui.components.createPreviewCells
+import com.brazole.peacefulqueens.game.ui.dialogs.GameWonDialog
 import com.brazole.peacefulqueens.game.ui.dialogs.MenuDialog
 
 @Composable
@@ -62,20 +63,13 @@ fun GameCompose(
     }
 
     if (uiState.showGameWonDialog) {
-        DialogQueens(
-            title = stringResource(R.string.win_title),
-            message = stringResource(
-                R.string.win_message,
-                uiState.boardSize,
-                uiState.elapsedTimeFormatted
-            ),
-            textPositive = stringResource(R.string.win_play_again),
-            textNegative = stringResource(R.string.win_new_size),
-            dismissable = false,
-            onConfirm = {
+        GameWonDialog(
+            boardSize = uiState.boardSize,
+            elapsedTimeFormatted = uiState.elapsedTimeFormatted,
+            onPlayAgain = {
                 callbacks.onResetClick()
             },
-            onDismiss = {
+            onNewSize = {
                 callbacks.onGameWonDialogDismiss()
             }
         )
